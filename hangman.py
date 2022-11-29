@@ -16,23 +16,28 @@ def run():
     chosen_word_list = [letter for letter in chosen_word] # hago una lista que contiene las letras de dicha palabra
     chosen_word_list_underscores = ["_"] * len(chosen_word_list) #hago una lista de underscores con la misma cantidad de letras que la palabra escogida
     letter_index_dict = {}                           # creo un diccionario vacío
-    for idx, letter in enumerate(chosen_word):
+    for idx, letter in enumerate(chosen_word):       # enumerate(chosen_word) crea tuplas del tipo (0,letra_0) , (1, letra_1 etc), ya que el método se aplica a un string
         if not letter_index_dict.get(letter):        # esto quiere decir, if letter_index_dict.get(letter) == False
             letter_index_dict[letter] = []           # es decir, si la llave no tiene valor asignado, le asigno una lista vacía
         letter_index_dict[letter].append(idx)        # el value de cada key es el índice idx, pero como este value es una lista tooca usar append.
                                                      # al final de esto me queda un diccionario con llaves las letras de la palabra y
                                                      #  valores una lista cuyo único item es el índice de dicha letra
-    while True:                              # esto es lo mismo que While True is True, es para ejecutar para siempre el bloque de código de abajo
+    lives = 9
+    while True and lives>0:                              # esto es lo mismo que While True is True, es para ejecutar para siempre el bloque de código de abajo
         os.system("clear")                           # con esto limpiamos la pantalla
         print("""
-|  ¡BIENVENID@ AL JUEGO DEL AHORCADO!   |
+        |    ¡BIENVENID@ AL JUEGO DEL AHORCADO!    |
 
-|  ¡ADIVINA LA PALABRA!  |
+        |    ¡ADIVINA LA PALABRA!   |
 
-""")
+        |    ¡SE MUY CUIDADOSO CON TUS INTENTOS, SOLO TIENES 8 VIDAS PARA ADIVINAR LA PALABRA!    |
+
+        """)
         for element in chosen_word_list_underscores:
             print(element + " ", end="")             # imprimimos la lista de underscores que se va llenando con las letras correctas que dice el usuario 
         print("\n")
+
+        print("Te quedan " + str(lives) + " vidas")      
 
         letter = input("Ingresa una letra: ").strip().upper()  #le pedimos la letra al usuario
         assert letter.isalpha(), "Solo puedes ingresar letras"  #creamos un assert en caso de que el usuario meta algo diferente  una letra
@@ -41,11 +46,22 @@ def run():
             for idx in letter_index_dict[letter]:   # itero sobre los indices
                 chosen_word_list_underscores[idx] = letter # en la lista de underscores, reemplazo el underscore por la letra ingresada 
                                                            # por el usuario en la posición adecuada
-        
+            lives = lives
+        else:
+            lives-=1
+
+       
+
+
         if "_" not in chosen_word_list_underscores: # si ya no hay undersocrs en la lista de underscores
             os.system("clear") #limpiamos
             print("¡Ganaste! La palabra era", chosen_word)
             break     # con esto rompemos el while puesto que ya terminamos el juego
+
+    if lives==0:
+        os.system("clear")
+        print("PERDISTE! :(!!   CONSUMISTE TUS 8 VIDAS, LA PALABRA CORRECTA ERA ", chosen_word)
+#        break
 
 
 if __name__ == '__main__':
