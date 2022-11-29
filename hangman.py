@@ -23,7 +23,8 @@ def run():
                                                      # al final de esto me queda un diccionario con llaves las letras de la palabra y
                                                      #  valores una lista cuyo único item es el índice de dicha letra
     lives = 9
-    while True and lives>0:                              # esto es lo mismo que While True is True, es para ejecutar para siempre el bloque de código de abajo
+    input_letters=[]
+    while True:                              # esto es lo mismo que While True is True, es para ejecutar para siempre el bloque de código de abajo
         os.system("clear")                           # con esto limpiamos la pantalla
         print("""
         |    ¡BIENVENID@ AL JUEGO DEL AHORCADO!    |
@@ -37,11 +38,13 @@ def run():
             print(element + " ", end="")             # imprimimos la lista de underscores que se va llenando con las letras correctas que dice el usuario 
         print("\n")
 
-        print("Te quedan " + str(lives) + " vidas")      
+        print("Te quedan " + str(lives) + " vidas", "\n")    
+
+        print("Has usado las letras: ", input_letters, "\n")  
 
         letter = input("Ingresa una letra: ").strip().upper()  #le pedimos la letra al usuario
         assert letter.isalpha(), "Solo puedes ingresar letras"  #creamos un assert en caso de que el usuario meta algo diferente  una letra
-
+        input_letters.append(letter)
         if letter in chosen_word_list:              # si la letra está en la lista de las letras de nuestra palabra entonces hacemos
             for idx in letter_index_dict[letter]:   # itero sobre los indices
                 chosen_word_list_underscores[idx] = letter # en la lista de underscores, reemplazo el underscore por la letra ingresada 
@@ -58,10 +61,10 @@ def run():
             print("¡Ganaste! La palabra era", chosen_word)
             break     # con esto rompemos el while puesto que ya terminamos el juego
 
-    if lives==0:
-        os.system("clear")
-        print("PERDISTE! :(!!   CONSUMISTE TUS 8 VIDAS, LA PALABRA CORRECTA ERA ", chosen_word)
-#        break
+        if lives==0:
+            os.system("clear")
+            print("PERDISTE! :(!!   CONSUMISTE TUS 8 VIDAS, LA PALABRA CORRECTA ERA ", chosen_word)
+            break
 
 
 if __name__ == '__main__':
